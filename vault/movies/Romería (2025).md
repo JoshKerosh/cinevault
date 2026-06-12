@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/6Wo9z9dvy0ns1Q84OLEHXemRpeh.jpg
+trailer_youtube_key: da3CAnPA_EM
 fetched_at: 2026-06-12
 tags: [movie, released, drama]
 ---

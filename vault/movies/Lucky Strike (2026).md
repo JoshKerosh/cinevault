@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/kzRAd7mj39ZY3FGNrDdZjqx56tn.jpg
+trailer_youtube_key: vtEnjikCXyA
 fetched_at: 2026-06-12
 tags: [movie, released, action, war]
 ---

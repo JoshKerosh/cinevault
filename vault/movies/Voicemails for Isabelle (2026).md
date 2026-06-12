@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/nmGIRyuMH72WHJengMo8LQjnZQn.jpg
+trailer_youtube_key: 9mi3YVYm3ZU
 fetched_at: 2026-06-12
 tags: [movie, upcoming, romance, comedy]
 ---

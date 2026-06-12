@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/8HkIe2i4ScpCkcX9SzZ9IPasqWV.jpg
+trailer_youtube_key: 399Ez7WHK5s
 fetched_at: 2026-06-12
 tags: [movie, released, science-fiction, action]
 ---

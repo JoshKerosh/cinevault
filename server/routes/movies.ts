@@ -66,6 +66,7 @@ router.get('/', (_req, res) => {
       release_date: meta.release_date || null,
       cast: meta.cast ? parseCastArray(meta.cast) : [],
       synopsis: extractSynopsis(content),
+      trailer_youtube_key: (meta.trailer_youtube_key && meta.trailer_youtube_key !== 'None') ? meta.trailer_youtube_key : null,
     }
   })
 

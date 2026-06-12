@@ -15,7 +15,8 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/sIwakdbMGS1krtgendTWpxTY9Hw.jpg
-fetched_at: 2026-06-11
+trailer_youtube_key: 7qRf_f_bbUk
+fetched_at: 2026-06-12
 tags: [movie, released, horror, mystery]
 ---
 

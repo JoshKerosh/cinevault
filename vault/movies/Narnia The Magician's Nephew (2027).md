@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/ckKx8XP3ld8x7UGouSdnZTLYJgn.jpg
+trailer_youtube_key: 
 fetched_at: 2026-06-12
 tags: [movie, released, fantasy, adventure]
 ---

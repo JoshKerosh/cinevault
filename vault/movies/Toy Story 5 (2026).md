@@ -15,7 +15,8 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/pxG26JdyuiDvJbSoucknaFiLeZD.jpg
-fetched_at: 2026-06-11
+trailer_youtube_key: QftAW9TTmuQ
+fetched_at: 2026-06-12
 tags: [movie, released, animation, family]
 ---
 

@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/2tqOhFy8SaQC5fNCgqyQhV0fr3W.jpg
+trailer_youtube_key: 
 fetched_at: 2026-06-12
 tags: [movie, released, thriller, horror]
 ---
@@ -42,8 +43,7 @@ One December night, Alice works as a babysitter while the baby's parents go out 
 |---|---|
 
 ## Similar Movies
-- [[Chow (2024)]]
-- [[Infested Hearts (2022)]]
-- [[Night Shift (2023)]]
-- [[Less Than Human (2017)]]
-- [[Dead Teenager Séance (2018)]]
+- [[Prey (2006)]]
+- [[L'Appel du Vide (2023)]]
+- [[SIGN-OFF (2023)]]
+- [[Hole in the Ground (2009)]]

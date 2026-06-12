@@ -14,7 +14,8 @@ ratings:
   imdb_votes: None
   rotten_tomatoes: None
   metacritic: None
-poster_url: None
+poster_url: 
+trailer_youtube_key: 
 fetched_at: 2026-06-12
 tags: [movie, released, horror, thriller]
 ---

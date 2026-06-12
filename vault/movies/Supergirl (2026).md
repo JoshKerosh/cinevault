@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/moejGxR2haap29d9NQ7qe8x4eGj.jpg
+trailer_youtube_key: tzlY8XD1CGg
 fetched_at: 2026-06-12
 tags: [movie, released, action, adventure]
 ---

@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/9RkDrI8V8QJBjhtyRX7y6Qow3aq.jpg
+trailer_youtube_key: EBh1LGRwiis
 fetched_at: 2026-06-12
 tags: [movie, released, thriller, history]
 ---

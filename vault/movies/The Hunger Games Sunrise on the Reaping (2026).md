@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/ffJaYMtB6v1TrvkyhCOqwqCKm0o.jpg
+trailer_youtube_key: fS35YSjopjE
 fetched_at: 2026-06-12
 tags: [movie, released, science-fiction, action]
 ---
@@ -42,8 +43,7 @@ Return to the world of Panem 24 years before the events of The Hunger Games, sta
 |---|---|
 
 ## Similar Movies
-- [[The Prisoner of Zenda, Inc. (1996)]]
-- [[The Tiger Rising (2022)]]
-- [[The Secret Islands: Untold Adventures of the Dawn Treader (2011)]]
-- [[IO (2019)]]
-- [[Snow Treasure (1968)]]
+- [[Logan (2017)]]
+- [[Death Race (2008)]]
+- [[Sherlock Holmes (2009)]]
+- [[We Were Soldiers (2002)]]

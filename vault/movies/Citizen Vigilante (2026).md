@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/d7flcqCOeJK4lrwc2HrFb3eH1hl.jpg
+trailer_youtube_key: fVxmjwaPEFU
 fetched_at: 2026-06-12
 tags: [movie, released, thriller, action]
 ---

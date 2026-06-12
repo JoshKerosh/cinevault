@@ -107,12 +107,28 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
           )}
         </div>
 
-        {movie.director && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs" style={{ color: '#4b5563' }}>Director</span>
-            <span className="text-sm font-medium truncate" style={{ color: '#cbd5e1' }}>{movie.director}</span>
-          </div>
-        )}
+        <div className="flex items-center gap-3 flex-wrap">
+          {movie.director && (
+            <div className="flex items-center gap-2">
+              <span className="text-xs" style={{ color: '#4b5563' }}>Director</span>
+              <span className="text-sm font-medium truncate" style={{ color: '#cbd5e1' }}>{movie.director}</span>
+            </div>
+          )}
+          {movie.trailer_youtube_key && (
+            <a
+              href={`https://www.youtube.com/watch?v=${movie.trailer_youtube_key}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full transition-all hover:scale-105 active:scale-95 shrink-0"
+              style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)' }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
+              </svg>
+              Watch Trailer
+            </a>
+          )}
+        </div>
 
         {movie.synopsis && (
           <div className="rounded-lg p-2.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>

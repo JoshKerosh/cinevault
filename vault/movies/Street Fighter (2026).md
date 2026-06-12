@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/rOH0hMRFJZCMzf6zTUldrbjAmSO.jpg
+trailer_youtube_key: Xt4X4FvXk2A
 fetched_at: 2026-06-12
 tags: [movie, released, action, comedy]
 ---

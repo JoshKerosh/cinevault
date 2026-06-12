@@ -15,7 +15,8 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/reZ8NInXjMkkaOpUHcI3Pn7iaRN.jpg
-fetched_at: 2026-06-11
+trailer_youtube_key: cGgWAHXuTKc
+fetched_at: 2026-06-12
 tags: [movie, released, comedy, horror]
 ---
 
@@ -44,6 +45,6 @@ Twenty-six years after outrunning a suspiciously familiar masked killer, the Cor
 ## Similar Movies
 - [[First Period (2013)]]
 - [[Back to the Future Part II (1989)]]
-- [[28 Days Later (2002)]]
 - [[Brazil (1985)]]
 - [[Vamping Babies (1926)]]
+- [[Easy Payments (1919)]]

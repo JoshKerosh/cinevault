@@ -15,6 +15,7 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/ka6eMNYCZhirflqtdupjPL9Eksf.jpg
+trailer_youtube_key: gZS0iFRjk5o
 fetched_at: 2026-06-12
 tags: [movie, released, science-fiction, drama]
 ---

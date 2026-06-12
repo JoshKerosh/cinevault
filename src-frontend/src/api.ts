@@ -30,6 +30,7 @@ export interface MovieListItem {
   release_date: string | null
   cast: string[]
   synopsis: string | null
+  trailer_youtube_key: string | null
 }
 
 export async function queryMovies(message: string): Promise<QueryResponse> {

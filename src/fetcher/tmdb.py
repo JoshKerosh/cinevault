@@ -66,7 +66,7 @@ class TMDBClient:
     def get_full(self, tmdb_id: int) -> dict:
         data = self._get(
             f"/movie/{tmdb_id}",
-            {"append_to_response": "credits,external_ids,similar"},
+            {"append_to_response": "credits,external_ids,similar,videos"},
         )
         return self._full(data)
 
@@ -97,6 +97,17 @@ class TMDBClient:
             if s.get("release_date") and len(s["release_date"]) >= 4
         ]
 
+        # Pick the best YouTube trailer: official first, then any trailer, then teaser
+        videos = raw.get("videos", {}).get("results", [])
+        yt_videos = [v for v in videos if v.get("site") == "YouTube"]
+        trailer_key = None
+        for vtype in ("Trailer", "Teaser", "Clip"):
+            candidates = [v for v in yt_videos if v.get("type") == vtype]
+            if candidates:
+                official = [v for v in candidates if v.get("official")]
+                trailer_key = (official or candidates)[0]["key"]
+                break
+
         return {
             "tmdb_id": raw.get("id"),
             "title": raw.get("title", ""),
@@ -111,6 +122,7 @@ class TMDBClient:
             "poster_url": f"{POSTER_BASE}{raw['poster_path']}" if raw.get("poster_path") else None,
             "status": raw.get("status"),
             "similar": similar,
+            "trailer_youtube_key": trailer_key,
             "ratings": {
                 "imdb": None,
                 "imdb_votes": None,

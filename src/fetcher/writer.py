@@ -105,7 +105,8 @@ ratings:
   imdb_votes: {r_imdb_votes}
   rotten_tomatoes: {r_rt}
   metacritic: {r_mc}
-poster_url: {m.get('poster_url', '')}
+poster_url: {m.get('poster_url', '') or ''}
+trailer_youtube_key: {m.get('trailer_youtube_key') or ''}
 fetched_at: {today}
 tags: {tags_yaml}
 ---

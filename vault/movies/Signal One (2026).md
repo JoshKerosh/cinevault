@@ -15,7 +15,8 @@ ratings:
   rotten_tomatoes: None
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/bi7Aeaozl51cd5K6vAn8tI1lOW0.jpg
-fetched_at: 2026-06-11
+trailer_youtube_key: rJY9BC89igE
+fetched_at: 2026-06-12
 tags: [movie, released, mystery, science-fiction]
 ---
 
