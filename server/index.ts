@@ -6,6 +6,7 @@ import { checkClaude } from './lib/claude'
 import queryRoute from './routes/query'
 import moviesRoute from './routes/movies'
 import graphRoute from './routes/graph'
+import ingestRoute from './routes/ingest'
 
 config({ path: path.resolve(__dirname, '../.env') })
 
@@ -18,6 +19,7 @@ app.use(express.json())
 app.use('/api/query', queryRoute)
 app.use('/api/movies', moviesRoute)
 app.use('/api/graph', graphRoute)
+app.use('/api/ingest', ingestRoute)
 
 app.get('/api/health', async (_req, res) => {
   const claudeOk = await checkClaude()

@@ -67,6 +67,8 @@ router.get('/', (_req, res) => {
       cast: meta.cast ? parseCastArray(meta.cast) : [],
       synopsis: extractSynopsis(content),
       trailer_youtube_key: (meta.trailer_youtube_key && meta.trailer_youtube_key !== 'None') ? meta.trailer_youtube_key : null,
+      trakt_rating: meta.trakt_rating ? parseFloat(meta.trakt_rating) : null,
+      trakt_votes: meta.trakt_votes ? parseInt(meta.trakt_votes, 10) : null,
     }
   })
 

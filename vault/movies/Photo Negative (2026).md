@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/vGMGET8xYEUuWnPqidrUjIesQSJ.jpg
 trailer_youtube_key: lHR69y6UnQ8
+trakt_rating: 
+trakt_votes: 
 fetched_at: 2026-06-12
 tags: [movie, released]
 ---

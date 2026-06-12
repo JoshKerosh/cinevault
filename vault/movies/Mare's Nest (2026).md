@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/msCltMICulw8qSeW5GfYaWGCWTB.jpg
 trailer_youtube_key: VhYFsVVqPIA
+trakt_rating: 3.5
+trakt_votes: 2
 fetched_at: 2026-06-12
 tags: [movie, released, science-fiction, drama]
 ---

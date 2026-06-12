@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import MovieBrowser from './components/MovieBrowser'
 import Chat from './components/Chat'
-import { getHealth, getMovies, type MovieListItem } from './api'
+import { getHealth, getMovies, triggerIngest, type MovieListItem } from './api'
 
 export default function App() {
   const [claudeOk, setClaudeOk] = useState<boolean | null>(null)
@@ -9,6 +9,7 @@ export default function App() {
   const [moviesLoading, setMoviesLoading] = useState(true)
   const [splitPct, setSplitPct] = useState(60)
   const [selectedMovie, setSelectedMovie] = useState<MovieListItem | null>(null)
+  const [ingesting, setIngesting] = useState(false)
 
   const selectByTitle = useCallback((title: string, year?: number) => {
     const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
@@ -21,10 +22,25 @@ export default function App() {
   const dragging = useRef(false)
   const mainRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    getHealth().then(h => setClaudeOk(h.claudeAvailable)).catch(() => setClaudeOk(false))
+  const refreshMovies = useCallback(() => {
+    setMoviesLoading(true)
     getMovies().then(m => { setMovies(m); setMoviesLoading(false) }).catch(() => setMoviesLoading(false))
   }, [])
+
+  useEffect(() => {
+    getHealth().then(h => setClaudeOk(h.claudeAvailable)).catch(() => setClaudeOk(false))
+    refreshMovies()
+  }, [refreshMovies])
+
+  const handleIngest = useCallback(async () => {
+    setIngesting(true)
+    try {
+      await triggerIngest()
+      refreshMovies()
+    } finally {
+      setIngesting(false)
+    }
+  }, [refreshMovies])
 
   const onDividerMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
@@ -71,6 +87,20 @@ export default function App() {
           <span className="text-sm" style={{ color: '#6366f1' }}>
             {moviesLoading ? '...' : `${movies.length} movies indexed`}
           </span>
+          <button
+            onClick={handleIngest}
+            disabled={ingesting}
+            title="Refresh movie data"
+            className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full transition-all disabled:opacity-50 hover:scale-105 active:scale-95"
+            style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)', color: '#818cf8' }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+              style={{ animation: ingesting ? 'spin 1s linear infinite' : 'none' }}>
+              <path d="M23 4v6h-6M1 20v-6h6"/>
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            {ingesting ? 'Ingesting...' : 'Refresh'}
+          </button>
           <div className="flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full"
             style={{ background: claudeOk ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', border: `1px solid ${claudeOk ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}` }}>
             <span className={`w-1.5 h-1.5 rounded-full ${claudeOk ? 'bg-emerald-400 glow-violet' : 'bg-red-400'}`}

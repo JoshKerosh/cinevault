@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/b4wekkUaxExzOeGe7hKXzhnyXHt.jpg
 trailer_youtube_key: 3_9vCamtuPY
+trakt_rating: 7.88
+trakt_votes: 50
 fetched_at: 2026-06-12
 tags: [movie, released, action, adventure]
 ---

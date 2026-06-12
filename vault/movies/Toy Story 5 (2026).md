@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/pxG26JdyuiDvJbSoucknaFiLeZD.jpg
 trailer_youtube_key: QftAW9TTmuQ
+trakt_rating: 6.75
+trakt_votes: 48
 fetched_at: 2026-06-12
 tags: [movie, released, animation, family]
 ---

@@ -81,7 +81,7 @@ def main() -> None:
         except Exception as e:
             console.print(f"  [yellow]skip[/yellow] {stub.get('title')}: {e}")
 
-    # --- Enrich with ratings from OMDb ---
+    # --- Enrich with ratings from OMDb and Trakt ---
     for movie in track(movies, description="Fetching ratings..."):
         imdb_id = movie.get("imdb_id")
         if imdb_id:
@@ -89,6 +89,11 @@ def main() -> None:
                 ratings = omdb.get_ratings(imdb_id)
                 if ratings:
                     movie["ratings"].update(ratings)
+            except Exception:
+                pass
+            try:
+                trakt_ratings = trakt.get_ratings(imdb_id)
+                movie.update(trakt_ratings)
             except Exception:
                 pass
 

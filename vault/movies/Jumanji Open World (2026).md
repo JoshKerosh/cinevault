@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/sHVsgvoaDOXx3B8OFg0sqewEmF8.jpg
 trailer_youtube_key: 
+trakt_rating: 4.0
+trakt_votes: 6
 fetched_at: 2026-06-12
 tags: [movie, released, fantasy, adventure]
 ---

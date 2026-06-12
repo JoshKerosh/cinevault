@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/gtssK2SacGjpj2psN0Ee2TcTgso.jpg
 trailer_youtube_key: IjfX8l5XrF8
+trakt_rating: 3.5
+trakt_votes: 2
 fetched_at: 2026-06-12
 tags: [movie, released, comedy]
 ---

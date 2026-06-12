@@ -1,6 +1,7 @@
 # CineVault Index
 - [[A tu vera (2026)]]
 - [[Avatar Aang The Last Airbender (2026)]]
+- [[Avatar Fire and Ash (2025)]]
 - [[Avengers Doomsday (2026)]]
 - [[Backrooms (2026)]]
 - [[Bad Counselors (2026)]]
@@ -10,7 +11,6 @@
 - [[Cheer Dad (2026)]]
 - [[Citizen Vigilante (2026)]]
 - [[Clayface (2026)]]
-- [[Colors of Evil Black (2026)]]
 - [[Crash Season (2026)]]
 - [[Deprisa deprisa (2026)]]
 - [[Disclosure Day (2026)]]
@@ -68,7 +68,6 @@
 - [[The Death of Robin Hood (2026)]]
 - [[The Dirt (2026)]]
 - [[The End of Oak Street (2026)]]
-- [[The Furious (2026)]]
 - [[The Hunger Games Sunrise on the Reaping (2026)]]
 - [[The Invite (2026)]]
 - [[The Marked Woman (2026)]]

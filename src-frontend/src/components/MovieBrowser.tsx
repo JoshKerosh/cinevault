@@ -96,6 +96,18 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
 
         <div className="flex items-center gap-4 flex-wrap">
           {movie.imdb && <StarRating value={movie.imdb} />}
+          {movie.trakt_rating && (
+            <span className="flex items-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#e8272a">
+                <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 4a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm3 10H9v-1.5h2.25V12H9v-1.5h3.75V14.5H15V16z"/>
+              </svg>
+              <span className="text-sm font-semibold" style={{ color: '#e8272a' }}>{movie.trakt_rating}</span>
+              <span className="text-xs" style={{ color: '#6b7280' }}>Trakt</span>
+              {movie.trakt_votes && (
+                <span className="text-xs" style={{ color: '#4b5563' }}>({movie.trakt_votes.toLocaleString()})</span>
+              )}
+            </span>
+          )}
           {movie.runtime_minutes && (
             <span className="text-xs flex items-center gap-1" style={{ color: '#94a3b8' }}>
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

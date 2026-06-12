@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/qQclTgLMDvGBuUBFGHRipxkEwWR.jpg
 trailer_youtube_key: oSeqs_xeqv4
+trakt_rating: 7.31
+trakt_votes: 5342
 fetched_at: 2026-06-12
 tags: [movie, released, action, drama]
 ---

@@ -32,6 +32,8 @@ export interface MovieListItem {
   cast: string[]
   synopsis: string | null
   trailer_youtube_key: string | null
+  trakt_rating: number | null
+  trakt_votes: number | null
 }
 
 export async function queryMovies(message: string): Promise<QueryResponse> {
@@ -53,5 +55,10 @@ export async function getMovies(): Promise<MovieListItem[]> {
 export async function getHealth(): Promise<{ status: string; claudeAvailable: boolean }> {
   const res = await fetch(`${BASE}/health`)
   if (!res.ok) throw new Error(`Server error: ${res.status}`)
+  return res.json()
+}
+
+export async function triggerIngest(): Promise<{ ok: boolean; log?: string; error?: string }> {
+  const res = await fetch(`${BASE}/ingest`, { method: 'POST' })
   return res.json()
 }

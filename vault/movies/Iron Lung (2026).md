@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/sIwakdbMGS1krtgendTWpxTY9Hw.jpg
 trailer_youtube_key: 7qRf_f_bbUk
+trakt_rating: 6.28
+trakt_votes: 1345
 fetched_at: 2026-06-12
 tags: [movie, released, horror, mystery]
 ---

@@ -107,6 +107,8 @@ ratings:
   metacritic: {r_mc}
 poster_url: {m.get('poster_url', '') or ''}
 trailer_youtube_key: {m.get('trailer_youtube_key') or ''}
+trakt_rating: {m.get('trakt_rating', '') or ''}
+trakt_votes: {m.get('trakt_votes', '') or ''}
 fetched_at: {today}
 tags: {tags_yaml}
 ---

@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/lFjtAAK5jCPXdcKIgpVJ54Hm0G0.jpg
 trailer_youtube_key: ZC1kEknG2ro
+trakt_rating: 9.5
+trakt_votes: 2
 fetched_at: 2026-06-12
 tags: [movie, released, romance, drama]
 ---

@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: 
 trailer_youtube_key: 
+trakt_rating: 
+trakt_votes: 
 fetched_at: 2026-06-12
 tags: [movie, released, drama, crime]
 ---

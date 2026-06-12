@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/9hktZMKboj27z6ePPzOkj9UGJbf.jpg
 trailer_youtube_key: 6xtzfNP-Yz8
+trakt_rating: 
+trakt_votes: 
 fetched_at: 2026-06-12
 tags: [movie, released, documentary]
 ---

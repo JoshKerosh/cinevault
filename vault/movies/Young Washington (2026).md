@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/ntW9zzhDmbt3sXDyPXb7SHVuDdB.jpg
 trailer_youtube_key: LJek-kc384w
+trakt_rating: 3.25
+trakt_votes: 4
 fetched_at: 2026-06-12
 tags: [movie, released, history, drama]
 ---

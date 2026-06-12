@@ -32,6 +32,23 @@ class TraktClient:
         data = self._get("/movies/anticipated", {"limit": count, "page": 1})
         return [self._normalize(item["movie"]) for item in data]
 
+    def get_ratings(self, imdb_id: str) -> dict:
+        """Return trakt_rating (0–10) and trakt_votes for a movie, or {} on failure."""
+        if not imdb_id:
+            return {}
+        try:
+            data = self._get(f"/movies/{imdb_id}/ratings")
+            rating = data.get("rating")
+            votes = data.get("votes")
+            if rating is None:
+                return {}
+            return {
+                "trakt_rating": round(float(rating), 2),
+                "trakt_votes": int(votes) if votes else 0,
+            }
+        except Exception:
+            return {}
+
     def _normalize(self, movie: dict) -> dict:
         ids = movie.get("ids", {})
         return {
