@@ -60,95 +60,82 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
         Back to library
       </button>
 
-      <div className="flex-1 overflow-y-auto">
-        {/* Hero poster */}
-        <div className="relative" style={{ height: 240 }}>
-          {movie.poster_url
-            ? <img src={movie.poster_url} alt={movie.title} className="w-full h-full object-cover" />
-            : <PosterPlaceholder title={movie.title} />}
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #080810 15%, transparent 70%)' }} />
-          {/* Status badge */}
-          {movie.status && (
-            <div className="absolute top-3 right-3">
-              <span className="text-xs px-2 py-1 rounded-full font-medium"
-                style={{
-                  background: movie.status === 'Released' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)',
-                  color: movie.status === 'Released' ? '#34d399' : '#fbbf24',
-                  border: `1px solid ${movie.status === 'Released' ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}`,
-                  backdropFilter: 'blur(4px)',
-                }}>
-                {movie.status}
-              </span>
-            </div>
+      {/* Poster — scales with viewport height, full image always visible */}
+      <div className="relative shrink-0" style={{ height: '32vh', background: '#0d0d1a' }}>
+        {movie.poster_url
+          ? <img src={movie.poster_url} alt={movie.title} className="w-full h-full object-contain" />
+          : <PosterPlaceholder title={movie.title} />}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #080810 8%, transparent 50%)' }} />
+        {movie.status && (
+          <div className="absolute top-3 right-3">
+            <span className="text-xs px-2 py-1 rounded-full font-medium"
+              style={{
+                background: movie.status === 'Released' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)',
+                color: movie.status === 'Released' ? '#34d399' : '#fbbf24',
+                border: `1px solid ${movie.status === 'Released' ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}`,
+                backdropFilter: 'blur(4px)',
+              }}>
+              {movie.status}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Info — fills remaining height, no scroll */}
+      <div className="flex-1 overflow-hidden px-4 py-3 flex flex-col gap-2 -mt-5 relative">
+        <div>
+          <h2 className="text-lg font-bold text-white leading-tight truncate">{movie.title}</h2>
+          <p className="text-sm" style={{ color: '#6366f1' }}>{movie.year}</p>
+        </div>
+
+        <div className="flex flex-wrap gap-1">
+          {movie.genres.map(g => <GenreTag key={g} genre={g} />)}
+        </div>
+
+        <div className="flex items-center gap-4 flex-wrap">
+          {movie.imdb && <StarRating value={movie.imdb} />}
+          {movie.runtime_minutes && (
+            <span className="text-xs flex items-center gap-1" style={{ color: '#94a3b8' }}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+              </svg>
+              {movie.runtime_minutes} min
+            </span>
+          )}
+          {movie.release_date && (
+            <span className="text-xs" style={{ color: '#64748b' }}>{movie.release_date}</span>
           )}
         </div>
 
-        <div className="px-4 pb-6 space-y-4 -mt-6 relative">
-          {/* Title block */}
-          <div>
-            <h2 className="text-xl font-bold text-white leading-tight">{movie.title}</h2>
-            <p className="text-sm mt-0.5" style={{ color: '#6366f1' }}>{movie.year}</p>
+        {movie.director && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs" style={{ color: '#4b5563' }}>Director</span>
+            <span className="text-sm font-medium truncate" style={{ color: '#cbd5e1' }}>{movie.director}</span>
           </div>
+        )}
 
-          {/* Genres */}
-          {movie.genres.length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
-              {movie.genres.map(g => <GenreTag key={g} genre={g} />)}
-            </div>
-          )}
-
-          {/* Key stats row */}
-          <div className="flex items-center gap-4 flex-wrap">
-            {movie.imdb && <StarRating value={movie.imdb} />}
-            {movie.runtime_minutes && (
-              <span className="text-xs flex items-center gap-1" style={{ color: '#94a3b8' }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
-                </svg>
-                {movie.runtime_minutes} min
-              </span>
-            )}
-            {movie.release_date && (
-              <span className="text-xs" style={{ color: '#64748b' }}>{movie.release_date}</span>
-            )}
+        {movie.synopsis && (
+          <div className="rounded-lg p-2.5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <p className="text-xs leading-relaxed line-clamp-3" style={{ color: '#94a3b8' }}>{movie.synopsis}</p>
           </div>
+        )}
 
-          {/* Director */}
-          {movie.director && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs" style={{ color: '#4b5563' }}>Director</span>
-              <span className="text-sm font-medium" style={{ color: '#cbd5e1' }}>{movie.director}</span>
+        {movie.cast && movie.cast.length > 0 && (
+          <div className="overflow-hidden">
+            <p className="text-xs font-semibold mb-1 uppercase tracking-wider" style={{ color: '#4b5563' }}>Cast</p>
+            <div className="space-y-1">
+              {movie.cast.slice(0, 4).map((c, i) => {
+                const [actor, role] = c.split(' as ')
+                return (
+                  <div key={i} className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium truncate" style={{ color: '#e2e8f0' }}>{actor?.trim()}</span>
+                    {role && <span className="text-xs truncate shrink-0" style={{ color: '#6b7280' }}>{role.trim()}</span>}
+                  </div>
+                )
+              })}
             </div>
-          )}
-
-          {/* Synopsis */}
-          {movie.synopsis && (
-            <div className="rounded-xl p-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-xs leading-relaxed" style={{ color: '#94a3b8' }}>{movie.synopsis}</p>
-            </div>
-          )}
-
-          {/* Cast */}
-          {movie.cast && movie.cast.length > 0 && (
-            <div>
-              <p className="text-xs font-semibold mb-2 uppercase tracking-wider" style={{ color: '#4b5563' }}>Cast</p>
-              <div className="space-y-1.5">
-                {movie.cast.slice(0, 6).map((c, i) => {
-                  const [actor, role] = c.split(' as ')
-                  return (
-                    <div key={i} className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium truncate" style={{ color: '#e2e8f0' }}>{actor?.trim()}</span>
-                      {role && <span className="text-xs truncate shrink-0" style={{ color: '#6b7280' }}>{role.trim()}</span>}
-                    </div>
-                  )
-                })}
-                {movie.cast.length > 6 && (
-                  <p className="text-xs" style={{ color: '#4b5563' }}>+{movie.cast.length - 6} more</p>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -175,7 +162,7 @@ export default function MovieBrowser({ movies, loading }: Props) {
 
   if (selected) {
     return (
-      <aside style={{ width: '100%', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <aside style={{ width: '100%', height: '100%', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <DetailView movie={selected} onBack={() => setSelected(null)} />
       </aside>
     )
@@ -236,21 +223,21 @@ export default function MovieBrowser({ movies, loading }: Props) {
             className="w-full flex items-center gap-3 px-3 py-3 text-left transition-colors hover:bg-white/5 group"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
             {/* Mini poster */}
-            <div className="w-10 h-14 rounded overflow-hidden shrink-0 relative"
+            <div className="w-12 h-16 rounded overflow-hidden shrink-0 relative"
               style={{ background: '#1e1b4b' }}>
               {movie.poster_url
                 ? <img src={movie.poster_url} alt={movie.title} className="poster-img w-full h-full object-cover" />
                 : <PosterPlaceholder title={movie.title} />}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate group-hover:text-indigo-300 transition-colors">
+              <p className="text-base font-semibold text-white truncate group-hover:text-indigo-300 transition-colors">
                 {movie.title}
               </p>
-              <p className="text-xs mt-0.5 flex items-center gap-2" style={{ color: '#6b7280' }}>
+              <p className="text-sm mt-0.5 flex items-center gap-2" style={{ color: '#6b7280' }}>
                 <span>{movie.year}</span>
                 {movie.imdb && (
                   <span className="flex items-center gap-0.5">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="#eab308">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="#eab308">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
                     <span className="text-yellow-500">{movie.imdb}</span>
@@ -258,7 +245,7 @@ export default function MovieBrowser({ movies, loading }: Props) {
                 )}
               </p>
               {movie.genres[0] && (
-                <p className="text-xs mt-1 truncate" style={{ color: GENRES_COLORS[movie.genres[0]] || '#6b7280' }}>
+                <p className="text-sm mt-1 truncate" style={{ color: GENRES_COLORS[movie.genres[0]] || '#6b7280' }}>
                   {movie.genres.slice(0, 2).join(' · ')}
                 </p>
               )}
