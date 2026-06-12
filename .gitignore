@@ -22,8 +22,20 @@ dist/
 # vault/_index.md
 vault/.fetch-index.json
 
-# Logs
+# Logs and temp output
 *.log
+err.txt
+out.txt
+
+# Debug / test scripts created during development
+debug_*.js
+test_*.js
+
+# Playwright MCP artifacts
+.playwright-mcp/
+
+# Screenshots dumped at root during development (kept ones live in docs/)
+cinevault-*.png
 
 # OS
 .DS_Store
