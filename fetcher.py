@@ -70,11 +70,12 @@ def main() -> None:
         )
 
     stubs = dedupe(stubs)
-    console.print(f"  {len(stubs)} unique movies discovered")
+    new_stubs = [s for s in stubs if str(s.get("tmdb_id", "")) not in writer._index]
+    console.print(f"  {len(stubs)} unique movies discovered, {len(new_stubs)} new")
 
     # --- Enrich each stub with full details ---
     movies: list[dict] = []
-    for stub in track(stubs, description="Fetching details..."):
+    for stub in track(new_stubs, description="Fetching details..."):
         tmdb_id = stub.get("tmdb_id")
         if not tmdb_id:
             continue
