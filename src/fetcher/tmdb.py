@@ -126,6 +126,9 @@ class TMDBClient:
                 trailer_key = (official or candidates)[0]["key"]
                 break
 
+        tmdb_rating = raw.get("vote_average")
+        tmdb_votes = raw.get("vote_count")
+
         return {
             "tmdb_id": raw.get("id"),
             "title": raw.get("title", ""),
@@ -141,6 +144,8 @@ class TMDBClient:
             "status": raw.get("status"),
             "similar": similar,
             "trailer_youtube_key": trailer_key,
+            "tmdb_rating": round(tmdb_rating, 1) if tmdb_rating else None,
+            "tmdb_votes": tmdb_votes,
             "ratings": {
                 "imdb": None,
                 "imdb_votes": None,

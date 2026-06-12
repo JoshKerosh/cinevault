@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/7wIBfBl2gejt6xHxNSK0reVIm7E.jpg
 trailer_youtube_key: 
+tmdb_rating: 6.8
+tmdb_votes: 86
 trakt_rating: 6.95
 trakt_votes: 37
 fetched_at: 2026-06-12

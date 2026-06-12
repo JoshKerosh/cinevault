@@ -16,8 +16,10 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/zm0KAbOjlt9eR5y7vDiL2dEOwMl.jpg
 trailer_youtube_key: k-YAcjaLuSI
+tmdb_rating: 8.5
+tmdb_votes: 1820
 trakt_rating: 7.86
-trakt_votes: 4080
+trakt_votes: 4088
 fetched_at: 2026-06-12
 tags: [movie, released, music, drama]
 ---

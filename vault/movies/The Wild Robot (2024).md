@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/eG9lz41mJqsI4J6ubMtVqD26q2J.jpg
 trailer_youtube_key: VUCNBAmse04
+tmdb_rating: 8.3
+tmdb_votes: 6129
 trakt_rating: 8.38
 trakt_votes: 16489
 fetched_at: 2026-06-12

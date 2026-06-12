@@ -64,9 +64,10 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
 
       {/* Poster — scales with viewport height, full image always visible */}
       {(() => {
-        const imdbColor = heatColor(movie.imdb, 10)
+        const primaryScore = movie.imdb ?? movie.tmdb_rating
+        const primaryColor = heatColor(primaryScore, 10)
         const traktColor = heatColor(movie.trakt_rating, 10)
-        const bannerColor = movie.imdb ? imdbColor : movie.trakt_rating ? traktColor : '#6366f1'
+        const bannerColor = primaryScore ? primaryColor : movie.trakt_rating ? traktColor : '#6366f1'
         return (
           <div className="relative shrink-0" style={{ height: '32vh', background: '#0d0d1a' }}>
             {movie.poster_url
@@ -92,19 +93,19 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
             )}
             {/* Rating badges — bottom of poster */}
             <div className="absolute bottom-3 left-3 flex items-center gap-2">
-              {movie.imdb && (
+              {primaryScore && (
                 <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl"
                   style={{
                     background: 'rgba(8,8,16,0.75)',
-                    border: `1px solid ${imdbColor}55`,
+                    border: `1px solid ${primaryColor}55`,
                     backdropFilter: 'blur(8px)',
-                    boxShadow: `0 0 12px ${imdbColor}33`,
+                    boxShadow: `0 0 12px ${primaryColor}33`,
                   }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill={imdbColor}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill={primaryColor}>
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                   </svg>
-                  <span className="text-sm font-bold leading-none" style={{ color: imdbColor }}>{movie.imdb}</span>
-                  <span className="text-xs leading-none" style={{ color: '#6b7280' }}>IMDb</span>
+                  <span className="text-sm font-bold leading-none" style={{ color: primaryColor }}>{primaryScore}</span>
+                  <span className="text-xs leading-none" style={{ color: '#6b7280' }}>{movie.imdb ? 'IMDb' : 'TMDB'}</span>
                 </div>
               )}
               {movie.trakt_rating && (

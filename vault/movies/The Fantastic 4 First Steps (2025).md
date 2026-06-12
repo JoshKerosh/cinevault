@@ -16,8 +16,10 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/nf5qaSEvyYSNeFH0YhSs5EsBLX9.jpg
 trailer_youtube_key: LJa5wv93YGM
+tmdb_rating: 7.0
+tmdb_votes: 3385
 trakt_rating: 6.96
-trakt_votes: 18030
+trakt_votes: 18031
 fetched_at: 2026-06-12
 tags: [movie, released, science-fiction, adventure]
 ---

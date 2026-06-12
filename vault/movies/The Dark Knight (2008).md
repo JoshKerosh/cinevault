@@ -16,8 +16,10 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg
 trailer_youtube_key: _PZpmTj1Q8Q
+tmdb_rating: 8.5
+tmdb_votes: 35875
 trakt_rating: 8.89
-trakt_votes: 51262
+trakt_votes: 51264
 fetched_at: 2026-06-12
 tags: [movie, released, action, crime]
 ---

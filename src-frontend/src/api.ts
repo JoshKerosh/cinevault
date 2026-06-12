@@ -35,6 +35,8 @@ export interface MovieListItem {
   cast: string[]
   synopsis: string | null
   trailer_youtube_key: string | null
+  tmdb_rating: number | null
+  tmdb_votes: number | null
   trakt_rating: number | null
   trakt_votes: number | null
 }

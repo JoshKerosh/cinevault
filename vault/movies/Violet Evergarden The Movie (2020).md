@@ -16,6 +16,8 @@ ratings:
   metacritic: None
 poster_url: https://image.tmdb.org/t/p/w500/bajajkoErDst0JxdFyBkABiF9rW.jpg
 trailer_youtube_key: BUfSen2rYQs
+tmdb_rating: 8.3
+tmdb_votes: 515
 trakt_rating: 8.36
 trakt_votes: 934
 fetched_at: 2026-06-12
