@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import MovieBrowser from './components/MovieBrowser'
 import Chat from './components/Chat'
 import { getHealth, getMovies, type MovieListItem } from './api'
@@ -7,10 +7,38 @@ export default function App() {
   const [claudeOk, setClaudeOk] = useState<boolean | null>(null)
   const [movies, setMovies] = useState<MovieListItem[]>([])
   const [moviesLoading, setMoviesLoading] = useState(true)
+  const [splitPct, setSplitPct] = useState(60)
+  const dragging = useRef(false)
+  const mainRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     getHealth().then(h => setClaudeOk(h.claudeAvailable)).catch(() => setClaudeOk(false))
     getMovies().then(m => { setMovies(m); setMoviesLoading(false) }).catch(() => setMoviesLoading(false))
+  }, [])
+
+  const onDividerMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault()
+    dragging.current = true
+    document.body.style.cursor = 'col-resize'
+    document.body.style.userSelect = 'none'
+
+    const onMouseMove = (ev: MouseEvent) => {
+      if (!dragging.current || !mainRef.current) return
+      const { left, width } = mainRef.current.getBoundingClientRect()
+      const pct = Math.min(80, Math.max(20, ((ev.clientX - left) / width) * 100))
+      setSplitPct(Math.round(pct))
+    }
+
+    const onMouseUp = () => {
+      dragging.current = false
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+    }
+
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
   }, [])
 
   return (
@@ -44,12 +72,23 @@ export default function App() {
         </div>
       </header>
 
-      {/* Body — 60 % library / 40 % chat */}
-      <main className="flex flex-1 overflow-hidden">
-        <div style={{ flex: '0 0 60%', minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      {/* Body — resizable split */}
+      <main ref={mainRef} className="flex flex-1 overflow-hidden">
+        <div style={{ width: `${splitPct}%`, minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <MovieBrowser movies={movies} loading={moviesLoading} />
         </div>
-        <div style={{ flex: '0 0 40%', minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+        {/* Draggable divider */}
+        <div
+          onMouseDown={onDividerMouseDown}
+          className="group shrink-0 flex items-center justify-center"
+          style={{ width: 6, cursor: 'col-resize', background: 'rgba(255,255,255,0.04)', zIndex: 10 }}
+        >
+          <div className="w-0.5 h-8 rounded-full transition-all group-hover:h-16"
+            style={{ background: 'rgba(99,102,241,0.4)', transition: 'all 0.2s' }} />
+        </div>
+
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           <Chat />
         </div>
       </main>
