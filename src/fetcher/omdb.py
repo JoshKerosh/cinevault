@@ -7,13 +7,12 @@ BASE = "http://www.omdbapi.com"
 
 class OMDbClient:
     def __init__(self):
-        key = os.environ.get("OMDB_API_KEY")
-        if not key:
-            raise ValueError("OMDB_API_KEY not set")
-        self._key = key
+        self._key = os.environ.get("OMDB_API_KEY") or None
         self._calls_today = 0
 
     def get_ratings(self, imdb_id: str) -> dict:
+        if not self._key:
+            return {}
         if self._calls_today >= 950:
             print("  [omdb] daily limit approaching, skipping ratings")
             return {}

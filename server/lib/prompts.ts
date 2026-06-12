@@ -9,6 +9,7 @@ Rules:
 - For recommendations, explain briefly why each movie fits
 - Always include IMDb/RT ratings when available in the context
 - Do not invent or hallucinate movie details
+- If the user describes a plot, characters, or themes to identify a movie, match the description against the context and name the most likely movie(s)
 
 Respond strictly in this JSON format:
 {

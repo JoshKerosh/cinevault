@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Search the vault. Outputs JSON to stdout. Called by the Node.js backend."""
 import argparse
+import io
 import json
 import sys
 from dotenv import load_dotenv
+
+# Force UTF-8 stdout so non-ASCII movie titles don't crash on Windows (charmap codec)
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 load_dotenv()
 

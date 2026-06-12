@@ -25,6 +25,11 @@ export interface MovieListItem {
   imdb: number | null
   director: string | null
   status: string | null
+  poster_url: string | null
+  runtime_minutes: number | null
+  release_date: string | null
+  cast: string[]
+  synopsis: string | null
 }
 
 export async function queryMovies(message: string): Promise<QueryResponse> {

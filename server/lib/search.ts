@@ -2,7 +2,21 @@ import { spawn } from 'child_process'
 import path from 'path'
 
 const PROJECT_ROOT = path.resolve(__dirname, '../..')
-const PYTHON = process.platform === 'win32' ? 'python' : 'python3'
+
+function getPython(): string {
+  if (process.platform === 'win32') {
+    const venvPy = path.join(PROJECT_ROOT, '.venv', 'Scripts', 'python.exe')
+    const fs = require('fs')
+    if (fs.existsSync(venvPy)) return venvPy
+    return 'py'
+  }
+  const venvPy = path.join(PROJECT_ROOT, '.venv', 'bin', 'python')
+  const fs = require('fs')
+  if (fs.existsSync(venvPy)) return venvPy
+  return 'python3'
+}
+
+const PYTHON = getPython()
 const SEARCH_SCRIPT = path.join(PROJECT_ROOT, 'search.py')
 
 export interface Chunk {

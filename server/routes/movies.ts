@@ -8,7 +8,9 @@ const PROJECT_ROOT = path.resolve(__dirname, '../..')
 
 function parseSimpleFrontmatter(content: string): Record<string, string> {
   const meta: Record<string, string> = {}
-  const match = content.match(/^---\n([\s\S]*?)\n---/)
+  // Normalise line endings so the regex works on Windows-written files (\r\n)
+  const normalised = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+  const match = normalised.match(/^---\n([\s\S]*?)\n---/)
   if (!match) return meta
   for (const line of match[1].split('\n')) {
     const colon = line.indexOf(':')
@@ -18,6 +20,22 @@ function parseSimpleFrontmatter(content: string): Record<string, string> {
     meta[key] = val
   }
   return meta
+}
+
+function extractSynopsis(content: string): string | null {
+  const normalised = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+  const m = normalised.match(/## Synopsis\n+([\s\S]*?)(?:\n## |$)/)
+  return m ? m[1].trim() : null
+}
+
+function parseCastArray(raw: string): string[] {
+  // Handles: ["Name as Role", "Name as Role"] or plain comma-separated
+  try {
+    const cleaned = raw.replace(/^[\[\s]+|[\]\s]+$/g, '')
+    return cleaned.split(/",\s*"/).map(s => s.replace(/^["']|["']$/g, '').trim()).filter(Boolean)
+  } catch {
+    return []
+  }
 }
 
 router.get('/', (_req, res) => {
@@ -39,10 +57,15 @@ router.get('/', (_req, res) => {
       file,
       title: meta.title || file.replace('.md', ''),
       year: meta.year ? parseInt(meta.year, 10) : null,
-      genres: meta.genres ? meta.genres.replace(/[\[\]]/g, '').split(',').map((g) => g.trim()) : [],
+      genres: meta.genres ? meta.genres.replace(/[\[\]]/g, '').split(',').map((g) => g.trim().replace(/^["']|["']$/g, '')) : [],
       imdb: meta['  imdb'] ? parseFloat(meta['  imdb']) : null,
       director: meta.director || null,
       status: meta.status || null,
+      poster_url: meta.poster_url || null,
+      runtime_minutes: meta.runtime_minutes ? parseInt(meta.runtime_minutes, 10) : null,
+      release_date: meta.release_date || null,
+      cast: meta.cast ? parseCastArray(meta.cast) : [],
+      synopsis: extractSynopsis(content),
     }
   })
 

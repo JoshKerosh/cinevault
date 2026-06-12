@@ -7,6 +7,7 @@ export async function spawnClaude(prompt: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const child = spawn(CMD, ['-p', '--output-format', 'json', '--model', MODEL], {
       stdio: ['pipe', 'pipe', 'pipe'],
+      shell: process.platform === 'win32',
     })
 
     let stdout = ''

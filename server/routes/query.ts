@@ -31,11 +31,18 @@ router.post('/', async (req, res) => {
     const raw = await spawnClaude(prompt)
 
     // claude -p --output-format json wraps the response in a result field
+    // The result field may contain a markdown ```json ... ``` code block
     let parsed: Record<string, unknown>
     try {
       const outer = JSON.parse(raw)
-      const inner = outer?.result ?? outer?.content ?? outer
-      parsed = typeof inner === 'string' ? JSON.parse(inner) : inner
+      let inner = outer?.result ?? outer?.content ?? outer
+      if (typeof inner === 'string') {
+        // Strip markdown code fences if present
+        inner = inner.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '').trim()
+        parsed = JSON.parse(inner)
+      } else {
+        parsed = inner
+      }
     } catch {
       parsed = { answer: raw, movies: [], sourcesUsed: [], confidence: 'low' }
     }
