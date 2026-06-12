@@ -7,7 +7,7 @@ export default function App() {
   const [claudeOk, setClaudeOk] = useState<boolean | null>(null)
   const [movies, setMovies] = useState<MovieListItem[]>([])
   const [moviesLoading, setMoviesLoading] = useState(true)
-  const [splitPct, setSplitPct] = useState(60)
+  const [splitPct, setSplitPct] = useState(50)
   const [selectedMovie, setSelectedMovie] = useState<MovieListItem | null>(null)
   const [ingesting, setIngesting] = useState(false)
 

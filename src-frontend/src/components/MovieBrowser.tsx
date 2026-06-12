@@ -193,9 +193,12 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
   )
 }
 
+type SortKey = 'default' | 'imdb' | 'trakt' | 'year'
+
 export default function MovieBrowser({ movies, loading, selected, onSelect }: Props) {
   const [search, setSearch] = useState('')
   const [genre, setGenre] = useState('')
+  const [sort, setSort] = useState<SortKey>('default')
 
   const allGenres = useMemo(() => {
     const set = new Set<string>()
@@ -204,12 +207,16 @@ export default function MovieBrowser({ movies, loading, selected, onSelect }: Pr
   }, [movies])
 
   const filtered = useMemo(() => {
-    return movies.filter(m => {
+    const list = movies.filter(m => {
       const matchSearch = !search || m.title.toLowerCase().includes(search.toLowerCase())
       const matchGenre = !genre || m.genres.includes(genre)
       return matchSearch && matchGenre
     })
-  }, [movies, search, genre])
+    if (sort === 'imdb') return [...list].sort((a, b) => (b.imdb ?? 0) - (a.imdb ?? 0))
+    if (sort === 'trakt') return [...list].sort((a, b) => (b.trakt_rating ?? 0) - (a.trakt_rating ?? 0))
+    if (sort === 'year') return [...list].sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
+    return list
+  }, [movies, search, genre, sort])
 
   if (selected) {
     return (
@@ -235,12 +242,22 @@ export default function MovieBrowser({ movies, loading, selected, onSelect }: Pr
             className="w-full pl-8 pr-3 py-2 text-sm rounded-lg outline-none transition-colors"
             style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: '#e2e8f0' }} />
         </div>
-        <select value={genre} onChange={e => setGenre(e.target.value)}
-          className="w-full px-3 py-2 text-sm rounded-lg outline-none"
-          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: genre ? '#e2e8f0' : '#6b7280' }}>
-          <option value="">All genres</option>
-          {allGenres.map(g => <option key={g} value={g}>{g}</option>)}
-        </select>
+        <div className="flex gap-2">
+          <select value={genre} onChange={e => setGenre(e.target.value)}
+            className="flex-1 px-3 py-2 text-sm rounded-lg outline-none"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: genre ? '#e2e8f0' : '#6b7280' }}>
+            <option value="">All genres</option>
+            {allGenres.map(g => <option key={g} value={g}>{g}</option>)}
+          </select>
+          <select value={sort} onChange={e => setSort(e.target.value as SortKey)}
+            className="flex-1 px-3 py-2 text-sm rounded-lg outline-none"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: sort !== 'default' ? '#818cf8' : '#6b7280' }}>
+            <option value="default">Sort: Default</option>
+            <option value="imdb">⭐ Best IMDb</option>
+            <option value="trakt">❤️ Best Trakt</option>
+            <option value="year">📅 Newest first</option>
+          </select>
+        </div>
         <p className="text-xs px-1" style={{ color: '#4b5563' }}>{filtered.length} movies</p>
       </div>
 
