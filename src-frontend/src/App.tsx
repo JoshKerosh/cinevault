@@ -44,10 +44,14 @@ export default function App() {
         </div>
       </header>
 
-      {/* Body */}
+      {/* Body — 70 % library / 30 % chat */}
       <main className="flex flex-1 overflow-hidden">
-        <MovieBrowser movies={movies} loading={moviesLoading} />
-        <Chat />
+        <div style={{ flex: '0 0 70%', minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <MovieBrowser movies={movies} loading={moviesLoading} />
+        </div>
+        <div style={{ flex: '0 0 30%', minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <Chat />
+        </div>
       </main>
     </div>
   )

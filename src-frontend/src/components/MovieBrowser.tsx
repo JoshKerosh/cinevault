@@ -175,15 +175,15 @@ export default function MovieBrowser({ movies, loading }: Props) {
 
   if (selected) {
     return (
-      <aside style={{ width: 360, borderRight: '1px solid rgba(255,255,255,0.06)', flexShrink: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <aside style={{ width: '100%', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <DetailView movie={selected} onBack={() => setSelected(null)} />
       </aside>
     )
   }
 
   return (
-    <aside className="flex flex-col overflow-hidden shrink-0"
-      style={{ width: 360, borderRight: '1px solid rgba(255,255,255,0.06)' }}>
+    <aside className="flex flex-col overflow-hidden"
+      style={{ width: '100%', borderRight: '1px solid rgba(255,255,255,0.06)' }}>
       {/* Search + filter */}
       <div className="px-3 py-3 space-y-2 shrink-0"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.01)' }}>
