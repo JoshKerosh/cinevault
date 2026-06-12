@@ -27,6 +27,16 @@ function GenreTag({ genre }: { genre: string }) {
   )
 }
 
+function imdbHeatColor(imdb: number | null): string {
+  if (!imdb) return '#6366f1'
+  if (imdb >= 8.5) return '#f59e0b'  // gold
+  if (imdb >= 7.5) return '#22c55e'  // green
+  if (imdb >= 6.5) return '#06b6d4'  // cyan
+  if (imdb >= 5.5) return '#eab308'  // yellow
+  if (imdb >= 4.5) return '#f97316'  // orange
+  return '#ef4444'                   // red
+}
+
 function PosterPlaceholder({ title }: { title: string }) {
   const initials = title.split(' ').filter(w => /^[A-Za-z0-9]/.test(w)).slice(0, 2).map(w => w[0]).join('').toUpperCase()
   return (
@@ -52,25 +62,50 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
       </button>
 
       {/* Poster — scales with viewport height, full image always visible */}
-      <div className="relative shrink-0" style={{ height: '32vh', background: '#0d0d1a' }}>
-        {movie.poster_url
-          ? <img src={movie.poster_url} alt={movie.title} className="w-full h-full object-contain" />
-          : <PosterPlaceholder title={movie.title} />}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #080810 8%, transparent 50%)' }} />
-        {movie.status && (
-          <div className="absolute top-3 right-3">
-            <span className="text-xs px-2 py-1 rounded-full font-medium"
-              style={{
-                background: movie.status === 'Released' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)',
-                color: movie.status === 'Released' ? '#34d399' : '#fbbf24',
-                border: `1px solid ${movie.status === 'Released' ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}`,
-                backdropFilter: 'blur(4px)',
-              }}>
-              {movie.status}
-            </span>
+      {(() => {
+        const heatColor = imdbHeatColor(movie.imdb)
+        return (
+          <div className="relative shrink-0" style={{ height: '32vh', background: '#0d0d1a' }}>
+            {movie.poster_url
+              ? <img src={movie.poster_url} alt={movie.title} className="w-full h-full object-contain" />
+              : <PosterPlaceholder title={movie.title} />}
+            {/* Heat-map gradient tint based on IMDb rating */}
+            <div className="absolute inset-0" style={{
+              background: `linear-gradient(to top, #080810 5%, ${heatColor}22 40%, transparent 70%)`
+            }} />
+            {/* Status badge */}
+            {movie.status && (
+              <div className="absolute top-3 right-3">
+                <span className="text-xs px-2 py-1 rounded-full font-medium"
+                  style={{
+                    background: movie.status === 'Released' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)',
+                    color: movie.status === 'Released' ? '#34d399' : '#fbbf24',
+                    border: `1px solid ${movie.status === 'Released' ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)'}`,
+                    backdropFilter: 'blur(4px)',
+                  }}>
+                  {movie.status}
+                </span>
+              </div>
+            )}
+            {/* IMDb score badge — bottom left of poster */}
+            {movie.imdb && (
+              <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl"
+                style={{
+                  background: 'rgba(8,8,16,0.75)',
+                  border: `1px solid ${heatColor}55`,
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: `0 0 12px ${heatColor}33`,
+                }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill={heatColor}>
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span className="text-sm font-bold leading-none" style={{ color: heatColor }}>{movie.imdb}</span>
+                <span className="text-xs leading-none" style={{ color: '#6b7280' }}>IMDb</span>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        )
+      })()}
 
       {/* Info — fills remaining height, no scroll */}
       <div className="flex-1 overflow-hidden px-4 py-3 flex flex-col gap-2 -mt-5 relative">
@@ -84,18 +119,8 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
         </div>
 
         {/* Ratings grid */}
-        {(movie.imdb || movie.rt != null || movie.metacritic || movie.trakt_rating) && (
+        {(movie.rt != null || movie.metacritic || movie.trakt_rating) && (
           <div className="grid grid-cols-2 gap-1.5">
-            {movie.imdb && (
-              <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
-                style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.18)' }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="#eab308"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <div className="min-w-0">
-                  <p className="text-xs font-bold leading-none" style={{ color: '#fbbf24' }}>{movie.imdb}</p>
-                  <p className="text-xs leading-none mt-0.5" style={{ color: '#78716c' }}>IMDb{movie.imdb_votes ? ` · ${(movie.imdb_votes / 1000).toFixed(0)}k` : ''}</p>
-                </div>
-              </div>
-            )}
             {movie.rt != null && (
               <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
                 style={{ background: movie.rt >= 60 ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)', border: `1px solid ${movie.rt >= 60 ? 'rgba(34,197,94,0.18)' : 'rgba(239,68,68,0.18)'}` }}>
