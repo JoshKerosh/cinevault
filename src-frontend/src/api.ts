@@ -15,6 +15,7 @@ export interface MovieResult {
   rt: number | null
   genres: string[]
   synopsis: string
+  poster_url?: string | null
 }
 
 export interface MovieListItem {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { queryMovies, type QueryResponse, type MovieResult } from '../api'
+import { queryMovies, type QueryResponse, type MovieResult, type MovieListItem } from '../api'
 
 interface Message {
   role: 'user' | 'assistant'
@@ -15,13 +15,24 @@ const SUGGESTIONS = [
   'I\'m thinking of a sci-fi movie about extraterrestrial life — which one is it?',
 ]
 
-function InlineMovieCard({ movie }: { movie: MovieResult }) {
+function InlineMovieCard({ movie, onSelect }: { movie: MovieResult; onSelect?: () => void }) {
+  const hasPoster = !!movie.poster_url
   return (
-    <div className="flex items-start gap-3 p-3 rounded-xl transition-colors hover:bg-white/5"
-      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-      <div className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold"
-        style={{ background: 'linear-gradient(135deg,#4f46e5,#7c3aed)', color: '#c4b5fd' }}>
-        {movie.title[0]}
+    <div
+      onClick={onSelect}
+      className="flex items-start gap-3 p-3 rounded-xl transition-colors hover:bg-white/5"
+      style={{
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        cursor: onSelect ? 'pointer' : 'default',
+      }}>
+      <div className="shrink-0 w-10 h-14 rounded-lg overflow-hidden"
+        style={{ background: 'linear-gradient(135deg,#1e1b4b,#312e81)' }}>
+        {hasPoster
+          ? <img src={movie.poster_url!} alt={movie.title} className="w-full h-full object-cover" />
+          : <div className="w-full h-full flex items-center justify-center text-xs font-bold"
+              style={{ color: '#c4b5fd' }}>{movie.title[0]}</div>
+        }
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-white truncate">{movie.title}
@@ -70,7 +81,15 @@ function ConfidenceBadge({ confidence }: { confidence: string }) {
   )
 }
 
-export default function Chat() {
+export default function Chat({ onSelectMovie, movies = [] }: { onSelectMovie?: (title: string, year?: number) => void; movies?: MovieListItem[] }) {
+  const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+  const findPoster = (title: string, year?: number): string | null => {
+    const match = movies.find(m => {
+      const t = normalise(m.title) === normalise(title)
+      return year ? t && m.year === year : t
+    }) ?? movies.find(m => normalise(m.title).includes(normalise(title)))
+    return match?.poster_url ?? null
+  }
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -168,9 +187,16 @@ export default function Chat() {
               {/* Movie cards from response */}
               {msg.response?.movies && msg.response.movies.length > 0 && (
                 <div className="space-y-2">
-                  {msg.response.movies.map((movie, j) => (
-                    <InlineMovieCard key={j} movie={movie} />
-                  ))}
+                  {msg.response.movies.map((movie, j) => {
+                    const enriched = { ...movie, poster_url: movie.poster_url ?? findPoster(movie.title, movie.year) }
+                    return (
+                      <InlineMovieCard
+                        key={j}
+                        movie={enriched}
+                        onSelect={onSelectMovie ? () => onSelectMovie(movie.title, movie.year) : undefined}
+                      />
+                    )
+                  })}
                 </div>
               )}
 

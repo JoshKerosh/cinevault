@@ -8,6 +8,16 @@ export default function App() {
   const [movies, setMovies] = useState<MovieListItem[]>([])
   const [moviesLoading, setMoviesLoading] = useState(true)
   const [splitPct, setSplitPct] = useState(60)
+  const [selectedMovie, setSelectedMovie] = useState<MovieListItem | null>(null)
+
+  const selectByTitle = useCallback((title: string, year?: number) => {
+    const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+    const found = movies.find(m => {
+      const titleMatch = normalise(m.title) === normalise(title)
+      return year ? titleMatch && m.year === year : titleMatch
+    }) ?? movies.find(m => normalise(m.title).includes(normalise(title)))
+    if (found) setSelectedMovie(found)
+  }, [movies])
   const dragging = useRef(false)
   const mainRef = useRef<HTMLDivElement>(null)
 
@@ -75,7 +85,7 @@ export default function App() {
       {/* Body — resizable split */}
       <main ref={mainRef} className="flex flex-1 overflow-hidden">
         <div style={{ width: `${splitPct}%`, minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <MovieBrowser movies={movies} loading={moviesLoading} />
+          <MovieBrowser movies={movies} loading={moviesLoading} selected={selectedMovie} onSelect={setSelectedMovie} />
         </div>
 
         {/* Draggable divider */}
@@ -89,7 +99,7 @@ export default function App() {
         </div>
 
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <Chat />
+          <Chat onSelectMovie={selectByTitle} movies={movies} />
         </div>
       </main>
     </div>

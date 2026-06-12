@@ -4,6 +4,8 @@ import type { MovieListItem } from '../api'
 interface Props {
   movies: MovieListItem[]
   loading: boolean
+  selected: MovieListItem | null
+  onSelect: (m: MovieListItem | null) => void
 }
 
 const GENRES_COLORS: Record<string, string> = {
@@ -157,10 +159,9 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
   )
 }
 
-export default function MovieBrowser({ movies, loading }: Props) {
+export default function MovieBrowser({ movies, loading, selected, onSelect }: Props) {
   const [search, setSearch] = useState('')
   const [genre, setGenre] = useState('')
-  const [selected, setSelected] = useState<MovieListItem | null>(null)
 
   const allGenres = useMemo(() => {
     const set = new Set<string>()
@@ -179,7 +180,7 @@ export default function MovieBrowser({ movies, loading }: Props) {
   if (selected) {
     return (
       <aside style={{ width: '100%', height: '100%', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <DetailView movie={selected} onBack={() => setSelected(null)} />
+        <DetailView movie={selected} onBack={() => onSelect(null)} />
       </aside>
     )
   }
@@ -235,7 +236,7 @@ export default function MovieBrowser({ movies, loading }: Props) {
         )}
 
         {filtered.map(movie => (
-          <button key={movie.file} onClick={() => setSelected(movie)}
+          <button key={movie.file} onClick={() => onSelect(movie)}
             className="w-full flex items-center gap-3 px-3 py-3 text-left transition-colors hover:bg-white/5 group"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
             {/* Mini poster */}
