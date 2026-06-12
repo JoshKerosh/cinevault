@@ -27,14 +27,15 @@ function GenreTag({ genre }: { genre: string }) {
   )
 }
 
-function imdbHeatColor(imdb: number | null): string {
-  if (!imdb) return '#6366f1'
-  if (imdb >= 8.5) return '#f59e0b'  // gold
-  if (imdb >= 7.5) return '#22c55e'  // green
-  if (imdb >= 6.5) return '#06b6d4'  // cyan
-  if (imdb >= 5.5) return '#eab308'  // yellow
-  if (imdb >= 4.5) return '#f97316'  // orange
-  return '#ef4444'                   // red
+function heatColor(score: number | null, max: number = 10): string {
+  if (!score) return '#6366f1'
+  const n = score / max  // normalise 0–1
+  if (n >= 0.85) return '#f59e0b'  // gold
+  if (n >= 0.75) return '#22c55e'  // green
+  if (n >= 0.65) return '#06b6d4'  // cyan
+  if (n >= 0.55) return '#eab308'  // yellow
+  if (n >= 0.45) return '#f97316'  // orange
+  return '#ef4444'                  // red
 }
 
 function PosterPlaceholder({ title }: { title: string }) {
@@ -63,15 +64,17 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
 
       {/* Poster — scales with viewport height, full image always visible */}
       {(() => {
-        const heatColor = imdbHeatColor(movie.imdb)
+        const imdbColor = heatColor(movie.imdb, 10)
+        const traktColor = heatColor(movie.trakt_rating, 10)
+        const bannerColor = movie.imdb ? imdbColor : movie.trakt_rating ? traktColor : '#6366f1'
         return (
           <div className="relative shrink-0" style={{ height: '32vh', background: '#0d0d1a' }}>
             {movie.poster_url
               ? <img src={movie.poster_url} alt={movie.title} className="w-full h-full object-contain" />
               : <PosterPlaceholder title={movie.title} />}
-            {/* Heat-map gradient tint based on IMDb rating */}
+            {/* Heat-map gradient — uses IMDb color if available, else Trakt */}
             <div className="absolute inset-0" style={{
-              background: `linear-gradient(to top, #080810 5%, ${heatColor}22 40%, transparent 70%)`
+              background: `linear-gradient(to top, #080810 5%, ${bannerColor}22 40%, transparent 70%)`
             }} />
             {/* Status badge */}
             {movie.status && (
@@ -87,22 +90,39 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
                 </span>
               </div>
             )}
-            {/* IMDb score badge — bottom left of poster */}
-            {movie.imdb && (
-              <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl"
-                style={{
-                  background: 'rgba(8,8,16,0.75)',
-                  border: `1px solid ${heatColor}55`,
-                  backdropFilter: 'blur(8px)',
-                  boxShadow: `0 0 12px ${heatColor}33`,
-                }}>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill={heatColor}>
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <span className="text-sm font-bold leading-none" style={{ color: heatColor }}>{movie.imdb}</span>
-                <span className="text-xs leading-none" style={{ color: '#6b7280' }}>IMDb</span>
-              </div>
-            )}
+            {/* Rating badges — bottom of poster */}
+            <div className="absolute bottom-3 left-3 flex items-center gap-2">
+              {movie.imdb && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl"
+                  style={{
+                    background: 'rgba(8,8,16,0.75)',
+                    border: `1px solid ${imdbColor}55`,
+                    backdropFilter: 'blur(8px)',
+                    boxShadow: `0 0 12px ${imdbColor}33`,
+                  }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill={imdbColor}>
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                  <span className="text-sm font-bold leading-none" style={{ color: imdbColor }}>{movie.imdb}</span>
+                  <span className="text-xs leading-none" style={{ color: '#6b7280' }}>IMDb</span>
+                </div>
+              )}
+              {movie.trakt_rating && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl"
+                  style={{
+                    background: 'rgba(8,8,16,0.75)',
+                    border: `1px solid ${traktColor}55`,
+                    backdropFilter: 'blur(8px)',
+                    boxShadow: `0 0 12px ${traktColor}33`,
+                  }}>
+                  <svg width="12" height="12" viewBox="0 0 512 512" fill={traktColor}>
+                    <path d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm0 374.4c-91.7 0-166.4-74.7-166.4-166.4S164.3 89.6 256 89.6 422.4 164.3 422.4 256 347.7 422.4 256 422.4zm0-291.2c-27.5 0-49.8 22.3-49.8 49.8s22.3 49.8 49.8 49.8 49.8-22.3 49.8-49.8-22.3-49.8-49.8-49.8zm49.8 166.4h-99.5v-16.6h33.2v-66.4h-33.2v-16.6h66.4v83h33.1v16.6z"/>
+                  </svg>
+                  <span className="text-sm font-bold leading-none" style={{ color: traktColor }}>{movie.trakt_rating}</span>
+                  <span className="text-xs leading-none" style={{ color: '#6b7280' }}>Trakt</span>
+                </div>
+              )}
+            </div>
           </div>
         )
       })()}
@@ -118,8 +138,8 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
           {movie.genres.map(g => <GenreTag key={g} genre={g} />)}
         </div>
 
-        {/* Ratings grid */}
-        {(movie.rt != null || movie.metacritic || movie.trakt_rating) && (
+        {/* Ratings grid — RT and Metacritic only (IMDb + Trakt shown on poster) */}
+        {(movie.rt != null || movie.metacritic) && (
           <div className="grid grid-cols-2 gap-1.5">
             {movie.rt != null && (
               <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
@@ -138,16 +158,6 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
                 <div className="min-w-0">
                   <p className="text-xs font-bold leading-none" style={{ color: '#22d3ee' }}>{movie.metacritic}</p>
                   <p className="text-xs leading-none mt-0.5" style={{ color: '#6b7280' }}>Metacritic</p>
-                </div>
-              </div>
-            )}
-            {movie.trakt_rating && (
-              <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
-                style={{ background: 'rgba(232,39,42,0.08)', border: '1px solid rgba(232,39,42,0.18)' }}>
-                <svg width="11" height="11" viewBox="0 0 512 512" fill="#e8272a"><path d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm0 374.4c-91.7 0-166.4-74.7-166.4-166.4S164.3 89.6 256 89.6 422.4 164.3 422.4 256 347.7 422.4 256 422.4zm0-291.2c-27.5 0-49.8 22.3-49.8 49.8s22.3 49.8 49.8 49.8 49.8-22.3 49.8-49.8-22.3-49.8-49.8-49.8zm49.8 166.4h-99.5v-16.6h33.2v-66.4h-33.2v-16.6h66.4v83h33.1v16.6z"/></svg>
-                <div className="min-w-0">
-                  <p className="text-xs font-bold leading-none" style={{ color: '#f87171' }}>{movie.trakt_rating}</p>
-                  <p className="text-xs leading-none mt-0.5" style={{ color: '#6b7280' }}>Trakt{movie.trakt_votes ? ` · ${(movie.trakt_votes / 1000).toFixed(1)}k` : ''}</p>
                 </div>
               </div>
             )}
