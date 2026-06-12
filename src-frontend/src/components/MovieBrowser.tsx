@@ -37,17 +37,6 @@ function PosterPlaceholder({ title }: { title: string }) {
   )
 }
 
-function StarRating({ value }: { value: number }) {
-  return (
-    <span className="flex items-center gap-1">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="#eab308">
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-      </svg>
-      <span className="text-sm font-semibold text-yellow-400">{value}</span>
-      <span className="text-xs" style={{ color: '#6b7280' }}>IMDb</span>
-    </span>
-  )
-}
 
 function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => void }) {
   return (
@@ -94,20 +83,53 @@ function DetailView({ movie, onBack }: { movie: MovieListItem; onBack: () => voi
           {movie.genres.map(g => <GenreTag key={g} genre={g} />)}
         </div>
 
+        {/* Ratings grid */}
+        {(movie.imdb || movie.rt != null || movie.metacritic || movie.trakt_rating) && (
+          <div className="grid grid-cols-2 gap-1.5">
+            {movie.imdb && (
+              <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
+                style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.18)' }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="#eab308"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold leading-none" style={{ color: '#fbbf24' }}>{movie.imdb}</p>
+                  <p className="text-xs leading-none mt-0.5" style={{ color: '#78716c' }}>IMDb{movie.imdb_votes ? ` · ${(movie.imdb_votes / 1000).toFixed(0)}k` : ''}</p>
+                </div>
+              </div>
+            )}
+            {movie.rt != null && (
+              <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
+                style={{ background: movie.rt >= 60 ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)', border: `1px solid ${movie.rt >= 60 ? 'rgba(34,197,94,0.18)' : 'rgba(239,68,68,0.18)'}` }}>
+                <span style={{ fontSize: 11 }}>{movie.rt >= 60 ? '🍅' : '🦠'}</span>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold leading-none" style={{ color: movie.rt >= 60 ? '#4ade80' : '#f87171' }}>{movie.rt}%</p>
+                  <p className="text-xs leading-none mt-0.5" style={{ color: '#6b7280' }}>Rotten Tomatoes</p>
+                </div>
+              </div>
+            )}
+            {movie.metacritic && (
+              <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
+                style={{ background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.18)' }}>
+                <span className="text-xs font-black px-1 rounded" style={{ background: movie.metacritic >= 61 ? '#06b6d4' : movie.metacritic >= 40 ? '#f59e0b' : '#ef4444', color: 'white', fontSize: 9 }}>M</span>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold leading-none" style={{ color: '#22d3ee' }}>{movie.metacritic}</p>
+                  <p className="text-xs leading-none mt-0.5" style={{ color: '#6b7280' }}>Metacritic</p>
+                </div>
+              </div>
+            )}
+            {movie.trakt_rating && (
+              <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
+                style={{ background: 'rgba(232,39,42,0.08)', border: '1px solid rgba(232,39,42,0.18)' }}>
+                <svg width="11" height="11" viewBox="0 0 512 512" fill="#e8272a"><path d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm0 374.4c-91.7 0-166.4-74.7-166.4-166.4S164.3 89.6 256 89.6 422.4 164.3 422.4 256 347.7 422.4 256 422.4zm0-291.2c-27.5 0-49.8 22.3-49.8 49.8s22.3 49.8 49.8 49.8 49.8-22.3 49.8-49.8-22.3-49.8-49.8-49.8zm49.8 166.4h-99.5v-16.6h33.2v-66.4h-33.2v-16.6h66.4v83h33.1v16.6z"/></svg>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold leading-none" style={{ color: '#f87171' }}>{movie.trakt_rating}</p>
+                  <p className="text-xs leading-none mt-0.5" style={{ color: '#6b7280' }}>Trakt{movie.trakt_votes ? ` · ${(movie.trakt_votes / 1000).toFixed(1)}k` : ''}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="flex items-center gap-4 flex-wrap">
-          {movie.imdb && <StarRating value={movie.imdb} />}
-          {movie.trakt_rating && (
-            <span className="flex items-center gap-1">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="#e8272a">
-                <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 4a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm3 10H9v-1.5h2.25V12H9v-1.5h3.75V14.5H15V16z"/>
-              </svg>
-              <span className="text-sm font-semibold" style={{ color: '#e8272a' }}>{movie.trakt_rating}</span>
-              <span className="text-xs" style={{ color: '#6b7280' }}>Trakt</span>
-              {movie.trakt_votes && (
-                <span className="text-xs" style={{ color: '#4b5563' }}>({movie.trakt_votes.toLocaleString()})</span>
-              )}
-            </span>
-          )}
           {movie.runtime_minutes && (
             <span className="text-xs flex items-center gap-1" style={{ color: '#94a3b8' }}>
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

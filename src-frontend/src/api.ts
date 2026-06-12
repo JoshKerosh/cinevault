@@ -24,6 +24,9 @@ export interface MovieListItem {
   year: number | null
   genres: string[]
   imdb: number | null
+  imdb_votes: number | null
+  rt: number | null
+  metacritic: number | null
   director: string | null
   status: string | null
   poster_url: string | null
