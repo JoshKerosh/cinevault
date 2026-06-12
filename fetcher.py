@@ -58,11 +58,14 @@ def main() -> None:
         console.print("Fetching trending movies...")
         stubs = tmdb.get_trending() + trakt.get_trending()
     else:
-        console.print("Full fetch: upcoming + trending + anticipated")
+        console.print("Full fetch: upcoming + trending + popular + top-rated + anticipated")
         stubs = (
             tmdb.get_upcoming()
             + tmdb.get_trending()
+            + tmdb.get_popular(pages=5)
+            + tmdb.get_top_rated(pages=5)
             + trakt.get_trending()
+            + trakt.get_popular(count=50)
             + trakt.get_anticipated()
         )
 

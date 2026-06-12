@@ -59,6 +59,24 @@ class TMDBClient:
         data = self._get("/trending/movie/week")
         return [self._stub(m) for m in data.get("results", [])[:count]]
 
+    def get_popular(self, pages: int = 5) -> list[dict]:
+        results = []
+        for page in range(1, pages + 1):
+            data = self._get("/movie/popular", {"page": page})
+            results.extend(data.get("results", []))
+            if page >= data.get("total_pages", 1):
+                break
+        return [self._stub(m) for m in results]
+
+    def get_top_rated(self, pages: int = 5) -> list[dict]:
+        results = []
+        for page in range(1, pages + 1):
+            data = self._get("/movie/top_rated", {"page": page})
+            results.extend(data.get("results", []))
+            if page >= data.get("total_pages", 1):
+                break
+        return [self._stub(m) for m in results]
+
     def search(self, query: str, limit: int = 5) -> list[dict]:
         data = self._get("/search/movie", {"query": query})
         return [self._stub(m) for m in data.get("results", [])[:limit]]
